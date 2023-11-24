@@ -14,6 +14,16 @@ return new class extends Migration
         Schema::create('prescriptions', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('note');
+            $table->string('street_1');
+            $table->string('street_2');
+            $table->string('district');
+            $table->string('delivery_time');
+            $table->string('pres_code');
+            $table->unsignedBigInteger('user_id');
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
         });
     }
 

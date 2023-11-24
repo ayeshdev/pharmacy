@@ -26,6 +26,10 @@ class User extends Authenticatable
         'dob'
     ];
 
+    public function prescription(){
+        return $this->hasMany(Prescription::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
