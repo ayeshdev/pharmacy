@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\ProfileController;
@@ -40,4 +41,12 @@ Route::middleware('auth')->group(function () {
 Route::post('/add-prescription',[PrescriptionController::class, 'store'])->name('prescription.store');
 Route::post('/add-images',[ImageController::class, 'store'])->name('images.store');
 
+// Route::get('/admin-login',[AdminController::class, 'index'])->name('admin.index');
+// Route::get('/admin-dashboard',[AdminController::class, 'index'])->name('admin.index');
+
+Route::get('/admin-dashboard', function () {
+    return Inertia::render('Admin/Dashboard');
+})->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
+
 require __DIR__.'/auth.php';
+require __DIR__.'/adminauth.php';
