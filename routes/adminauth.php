@@ -31,6 +31,7 @@ Route::middleware('guest:admin')->group(function () {
 });
 
 Route::middleware('auth:admin')->group(function () {
+    
     Route::get('admin/verify-email', EmailVerificationPromptController::class)
                 ->name('admin.verification.notice');
 

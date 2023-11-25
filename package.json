@@ -20,6 +20,8 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "flowbite": "^2.2.0",
+        "flowbite-react": "^0.7.0",
         "react-table": "^7.8.0"
     }
 }

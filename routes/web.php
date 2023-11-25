@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuotationController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -45,6 +46,10 @@ Route::post('/add-images',[ImageController::class, 'store'])->name('images.store
 // Route::get('/admin-dashboard',[AdminController::class, 'index'])->name('admin.index');
 
 Route::get('/admin-dashboard',[AdminController::class,'index'])->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
+Route::get('/prescription/{id}',[PrescriptionController::class,'index'])->middleware(['auth:admin', 'verified'])->name('admin.getprecription');
+
+Route::post('/add-quotation',[QuotationController::class,'store'])->middleware(['auth:admin', 'verified'])->name('quotation.store');
+
 
 require __DIR__.'/auth.php';
 require __DIR__.'/adminauth.php';

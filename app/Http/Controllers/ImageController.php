@@ -28,6 +28,8 @@ class ImageController extends Controller
                     'mime' => $newImage->mime,
                     'pres_code' => "123"
                 ]);
+
+                $image->move(public_path('uploads'), $newImage->filename);
             } catch (Exception $e) {
                 dd($e->getMessage());
             }

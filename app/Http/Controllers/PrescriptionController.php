@@ -13,9 +13,17 @@ class PrescriptionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($id)
     {
-        //
+        $data = Prescription::find($id);
+        $images = Image::where('prescription_id',$id)->get();
+
+        $response = [
+            'data'=> $data,
+            'images'=> $images,
+        ];
+
+        return response()->json($response);
     }
 
     /**
