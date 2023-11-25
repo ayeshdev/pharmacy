@@ -44,9 +44,7 @@ Route::post('/add-images',[ImageController::class, 'store'])->name('images.store
 // Route::get('/admin-login',[AdminController::class, 'index'])->name('admin.index');
 // Route::get('/admin-dashboard',[AdminController::class, 'index'])->name('admin.index');
 
-Route::get('/admin-dashboard', function () {
-    return Inertia::render('Admin/Dashboard');
-})->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
+Route::get('/admin-dashboard',[AdminController::class,'index'])->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
 
 require __DIR__.'/auth.php';
 require __DIR__.'/adminauth.php';

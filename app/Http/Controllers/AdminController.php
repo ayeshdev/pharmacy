@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Prescription;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,7 +14,9 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admin/Auth/Login');
+        $prescriptions = Prescription::select('note')->get();
+
+        return Inertia::render('Admin/Dashboard',['prescriptions'=>$prescriptions]);
     }
 
     /**
