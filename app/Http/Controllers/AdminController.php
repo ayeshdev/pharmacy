@@ -15,7 +15,6 @@ class AdminController extends Controller
     public function index()
     {
         $prescriptions = Prescription::with('user')->get();
-
         return Inertia::render('Admin/Dashboard',['prescriptions'=>$prescriptions]);
     }
 

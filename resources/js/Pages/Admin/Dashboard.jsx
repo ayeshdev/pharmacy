@@ -278,18 +278,17 @@ export default function Dashboard({ auth }) {
                                                 placeholder="Enter drug name"
                                                 className="w-2/3 p-2 border border-gray-300 rounded"
                                                 value={drug}
-                                                onChange={(e) => setDrug(e.target.value)} placeholder="Enter drug name"
-                                                className="w-2/3 p-2 border border-gray-300 rounded" />
+                                                onChange={(e) => setDrug(e.target.value)}
+                                                 />
                                         </div>
                                         <div className="flex justify-between items-center mb-3">
                                             <label htmlFor="quantity" className="w-1/3 text-right px-4">Quantity:</label>
-                                            <input type="text" id="quantity" type="text"
-                                                id="quantity"
+                                            <input type="text" id="quantity" 
                                                 placeholder="Enter quantity"
                                                 className="w-2/3 p-2 border border-gray-300 rounded"
                                                 value={quantity}
-                                                onChange={(e) => setQuantity(e.target.value)} placeholder="Enter quantity"
-                                                className="w-2/3 p-2 border border-gray-300 rounded" />
+                                                onChange={(e) => setQuantity(e.target.value)}
+                                                 />
                                         </div>
                                         <div className="flex justify-end">
                                             <button className="px-4 py-2 bg-blue-500 text-white rounded-lg w-2/3" onClick={handleAddItem}>Add</button>

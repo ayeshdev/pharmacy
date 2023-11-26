@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Quotation;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,6 +14,15 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
+
+    public function quotations(){
+        // Get quotations for the authenticated user
+        $quotations = Quotation::where('user_id', auth()->id())->get();
+
+        // Pass the quotations to a view or return JSON response based on your needs
+        return Inertia::render('Quotations',['quotations'=>$quotations]);
+        // Or return JSON response: return response()->json(['quotations' => $quotations]);
+    }
     /**
      * Display the user's profile form.
      */
