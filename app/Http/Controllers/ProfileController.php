@@ -21,7 +21,6 @@ class ProfileController extends Controller
 
         // Pass the quotations to a view or return JSON response based on your needs
         return Inertia::render('Quotations',['quotations'=>$quotations]);
-        // Or return JSON response: return response()->json(['quotations' => $quotations]);
     }
     /**
      * Display the user's profile form.
@@ -46,7 +45,6 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
-
         return Redirect::route('profile.edit');
     }
 

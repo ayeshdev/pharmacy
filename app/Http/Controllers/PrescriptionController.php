@@ -60,34 +60,8 @@ class PrescriptionController extends Controller
         'user_id'=>$userId,
         ]);
 
-    
-        // dd($newImage);
-
-        // $prescription = new Prescription();
-        // $prescription->images()->save($newImage);
-
         $pres_id = $savedData->id;
-
         $imageController->store($pres_id,$images);
-
-        // $response = Http::post(route('images.store'),['pres_id'=>$pres_id]);
-        // return $response->status();
-    
-    // dd($images);
-
-    // foreach ($images as $image) {
-
-    //     $imageData = file_get_contents($image->getRealPath());
-
-    //     $newImage = new Image();
-    //     $newImage->filename = $image->getClientOriginalName();
-    //     $newImage->mime = $image->getClientMimeType();
-    //     $newImage->data = $imageData;
-
-    //     dd($newImage);
-
-    //     $prescription->images()->save($newImage);
-    // }
 
     }
 

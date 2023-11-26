@@ -46,7 +46,7 @@ class QuotationController extends Controller
 
         // Create a new Quotation instance
         $quotation = new Quotation();
-        $quotation->user_id = $user_id; // Assuming user_id is a column in the Quotation table
+        $quotation->user_id = $user_id;
         $quotation->data = $tableData; // This will automatically JSON encode the data
         $quotation->status_id = 1;
         $quotation->prescription_id = $prescription_id;

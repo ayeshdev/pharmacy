@@ -1,27 +1,16 @@
 "use client";
-
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm, usePage } from "@inertiajs/react";
-import { Input } from "postcss";
-import { useRef, useState } from "react";
+import { Head, usePage } from "@inertiajs/react";
+import { useState } from "react";
 
 import { Button, Modal } from "flowbite-react";
 import AdminDashboardHeader from "@/Components/AdminDashboardHeader";
 
 export default function Dashboard({ auth }) {
     const { prescriptions } = usePage().props;
-
     const [openModal, setOpenModal] = useState(false);
     const [fetchedData, setFetchedData] = useState({ data: {}, images: [] });
-
     const [fetchDataId, setFetchDataId] = useState('');
-
-
     const [selectedImage, setSelectedImage] = useState('');
-
     const [openQuotationModal, setOpenQuotationModal] = useState(false);
     const [selectedPrescription, setSelectedPrescription] = useState(null);
 
@@ -64,7 +53,7 @@ export default function Dashboard({ auth }) {
         setFetchDataId(id);
 
         try {
-            const response = await fetch(`/prescription/${id}`); // Replace with your Laravel endpoint
+            const response = await fetch(`/prescription/${id}`);
             if (!response.ok) {
                 throw new Error("Network response was not ok");
             }
@@ -78,7 +67,6 @@ export default function Dashboard({ auth }) {
             }
 
             setOpenModal(true);
-            console.log(data); // Handle the fetched data here
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -92,8 +80,6 @@ export default function Dashboard({ auth }) {
         const selectedPrescription = prescriptions.find(prescription => prescription.id === fetchDataId);
 
         if (selectedPrescription.quotation) {
-            console.log('Quotation already exists for this prescription');
-            // Optionally, inform the user that a quotation already exists
             return;
         }
 
@@ -111,7 +97,7 @@ export default function Dashboard({ auth }) {
                 },
                 body: JSON.stringify({
                     user_id,
-                    tableData: items, // Assuming 'items' holds the table data
+                    tableData: items,
                     prescriptionId,
                 }),
             });
@@ -150,9 +136,9 @@ export default function Dashboard({ auth }) {
                 throw new Error("Network response was not ok");
             }
             const data = await response.json();
-            setSelectedPrescription(data); // Set the fetched data here
+            setSelectedPrescription(data); // Set the fetched data
             setOpenQuotationModal(true);
-            console.log(data); // Handle the fetched quotation data here
+
         } catch (error) {
             console.error("Error fetching quotation data:", error);
         }
@@ -375,14 +361,12 @@ export default function Dashboard({ auth }) {
                                             {selectedPrescription.data.map((item, itemIndex) => (
                                                 <tr key={itemIndex}>
                                                     <td className="py-2">{item.name}</td>
-                                                    {/* Access other fields of 'item' as needed */}
                                                     <td className="py-2 text-right">{item.quantity}</td>
                                                     <td className="py-2 text-right">{item.amount}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
                                     </table>
-                                    {/* Additional details or actions */}
                                 </div>
                             </div>
                         </div>

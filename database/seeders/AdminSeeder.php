@@ -17,7 +17,6 @@ class AdminSeeder extends Seeder
                 Admin::create([
                     'email' => 'a@gmail.com',
                     'password' => bcrypt('qwertyuiop'), // Encrypt the password
-                    // Add other admin details as needed
                 ]);
     }
 }

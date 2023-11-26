@@ -1,13 +1,7 @@
 "use client";
-
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm, usePage } from "@inertiajs/react";
-import { Input } from "postcss";
-import React, { useRef, useState } from "react";
-
+import { Head,usePage } from "@inertiajs/react";
+import React, { useState } from "react";
 import { Button, Modal } from "flowbite-react";
 
 export default function Quotations({ auth }) {

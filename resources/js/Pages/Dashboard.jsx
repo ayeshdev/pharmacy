@@ -3,11 +3,9 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
-import { Input } from "postcss";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 export default function Dashboard({ auth, districts, timeSlots }) {
-    const [selectedValue, setSelectedValue] = useState("");
 
     // State to hold the image URLs for preview
     const [imagePreviews, setImagePreviews] = useState([]);

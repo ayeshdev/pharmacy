@@ -57,9 +57,6 @@ Route::middleware('auth')->group(function () {
 Route::post('/add-prescription',[PrescriptionController::class, 'store'])->name('prescription.store');
 Route::post('/add-images',[ImageController::class, 'store'])->name('images.store');
 
-// Route::get('/admin-login',[AdminController::class, 'index'])->name('admin.index');
-// Route::get('/admin-dashboard',[AdminController::class, 'index'])->name('admin.index');
-
 Route::get('/admin-dashboard',[AdminController::class,'index'])->middleware(['auth:admin', 'verified'])->name('admin.dashboard');
 Route::get('/prescription/{id}',[PrescriptionController::class,'index'])->middleware(['auth:admin', 'verified'])->name('admin.getprecription');
 

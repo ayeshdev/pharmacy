@@ -16,7 +16,6 @@ class StatusSeeder extends Seeder
         $statuses = [
             ['is_active' => false],
             ['is_active' => true],
-            // Add more default statuses if needed
         ];
 
         DB::table('statuses')->insert($statuses);
