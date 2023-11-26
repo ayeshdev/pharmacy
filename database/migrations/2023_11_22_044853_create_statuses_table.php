@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('statuses', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('prescription_id');
-            $table->string('filename');
-            $table->string('mime');
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
-
-            $table->foreign('prescription_id')->references('id')->on('prescriptions')->onDelete('cascade');
         });
     }
 
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('prescription_images');
+        Schema::dropIfExists('statuses');
     }
 };

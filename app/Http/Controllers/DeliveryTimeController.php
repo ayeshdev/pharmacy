@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
-use App\Models\Prescription;
+use App\Models\DeliveryTime;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
-class AdminController extends Controller
+class DeliveryTimeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $prescriptions = Prescription::with('user','quotation')->get();
-        return Inertia::render('Admin/Dashboard',['prescriptions'=>$prescriptions]);
+        //
     }
 
     /**
@@ -37,7 +34,7 @@ class AdminController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Admin $admin)
+    public function show(DeliveryTime $deliveryTime)
     {
         //
     }
@@ -45,7 +42,7 @@ class AdminController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Admin $admin)
+    public function edit(DeliveryTime $deliveryTime)
     {
         //
     }
@@ -53,7 +50,7 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Admin $admin)
+    public function update(Request $request, DeliveryTime $deliveryTime)
     {
         //
     }
@@ -61,7 +58,7 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Admin $admin)
+    public function destroy(DeliveryTime $deliveryTime)
     {
         //
     }

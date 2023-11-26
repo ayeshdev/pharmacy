@@ -9,7 +9,7 @@ class Quotation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['data'];
+    protected $fillable = ['data','status_id','$prescription_id'];
 
     // Mutator to automatically encode data as JSON before saving
     public function setDataAttribute($value)
@@ -26,5 +26,10 @@ class Quotation extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function prescription()
+    {
+        return $this->belongsTo(Prescription::class);
     }
 }

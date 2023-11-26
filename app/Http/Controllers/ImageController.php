@@ -26,7 +26,6 @@ class ImageController extends Controller
                     'prescription_id' => $id,
                     'filename' => $newImage->filename,
                     'mime' => $newImage->mime,
-                    'pres_code' => "123"
                 ]);
 
                 $image->move(public_path('uploads'), $newImage->filename);

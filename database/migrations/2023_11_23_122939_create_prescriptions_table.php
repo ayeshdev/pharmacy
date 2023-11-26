@@ -17,11 +17,14 @@ return new class extends Migration
             $table->string('note');
             $table->string('street_1');
             $table->string('street_2');
-            $table->string('district');
-            $table->string('delivery_time');
-            $table->string('pres_code');
-            $table->unsignedBigInteger('user_id');
 
+            $table->unsignedBigInteger('district_id');
+            $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade');
+
+            $table->unsignedBigInteger('delivery_time_id');
+            $table->foreign('delivery_time_id')->references('id')->on('delivery_times')->onDelete('cascade');
+
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
         });
@@ -30,8 +33,12 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
+
     public function down(): void
     {
-        Schema::dropIfExists('prescriptions');
+        Schema::table('prescriptions', function (Blueprint $table) {
+            $table->dropForeign(['quotation_id']);
+            $table->dropColumn('quotation_id');
+        });
     }
 };

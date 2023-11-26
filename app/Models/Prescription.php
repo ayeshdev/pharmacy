@@ -13,17 +13,30 @@ class Prescription extends Model
         'note',
         'street_1',
         'street_2',
-        'district',
-        'delivery_time',
+        'district_id',
+        'delivery_time_id',
         'user_id',
-        'pres_code'
+        'prescription_id',
+        'quotation_id',
     ];
 
     public function user(){
         return $this->belongsTo(User::class);
     }
 
+    public function district(){
+        return $this->belongsTo(District::class);
+    }
+
+    public function timeSlot(){
+        return $this->belongsTo(DeliveryTime::class);
+    }
+
     public function images(){
         return $this->hasMany(Image::class);
+    }
+
+    public function quotation(){
+        return $this->hasOne(Quotation::class);
     }
 }

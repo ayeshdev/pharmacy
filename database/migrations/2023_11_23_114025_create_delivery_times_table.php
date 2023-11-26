@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('quotations', function (Blueprint $table) {
+        Schema::create('delivery_times', function (Blueprint $table) {
             $table->id();
-            $table->json('data');
-            $table->unsignedBigInteger('user_id');
+            $table->string('time_slot');
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
         });
     }
 
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('quotations');
+        Schema::dropIfExists('delivery_times');
     }
 };

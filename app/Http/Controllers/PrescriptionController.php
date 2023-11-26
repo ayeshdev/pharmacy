@@ -42,7 +42,6 @@ class PrescriptionController extends Controller
         //
     $userId = Auth::id();
     $images = $request->file('images');
-    $uniqueCode = 123;
 
         $data = $request->validate([
         'note'=>'required',
@@ -56,10 +55,9 @@ class PrescriptionController extends Controller
         'note'=>$request->note,
         'street_1'=>$request->street_1,
         'street_2'=>$request->street_2,
-        'district'=>$request->district,
-        'delivery_time'=>$request->delivery_time,
+        'district_id'=>$request->district,
+        'delivery_time_id'=>$request->delivery_time,
         'user_id'=>$userId,
-        'pres_code'=>$uniqueCode
         ]);
 
     

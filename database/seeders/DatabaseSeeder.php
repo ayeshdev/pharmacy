@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\District;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,5 +20,14 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        // Call the AdminSeeder within the run method
+        $this->call([
+            AdminSeeder::class,
+            StatusSeeder::class,
+            DistrictSeeder::class,
+            DeliveryTimeSeeder::class,
+            // Other seeders...
+        ]);
     }
 }

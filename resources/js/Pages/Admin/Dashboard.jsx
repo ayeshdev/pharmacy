@@ -9,6 +9,7 @@ import { Input } from "postcss";
 import { useRef, useState } from "react";
 
 import { Button, Modal } from "flowbite-react";
+import AdminDashboardHeader from "@/Components/AdminDashboardHeader";
 
 export default function Dashboard({ auth }) {
     const { prescriptions } = usePage().props;
@@ -16,10 +17,13 @@ export default function Dashboard({ auth }) {
     const [openModal, setOpenModal] = useState(false);
     const [fetchedData, setFetchedData] = useState({ data: {}, images: [] });
 
-    const [fetchDataId,setFetchDataId] = useState('');
+    const [fetchDataId, setFetchDataId] = useState('');
 
 
     const [selectedImage, setSelectedImage] = useState('');
+
+    const [openQuotationModal, setOpenQuotationModal] = useState(false);
+    const [selectedPrescription, setSelectedPrescription] = useState(null);
 
 
     // Quotation Table
@@ -83,10 +87,17 @@ export default function Dashboard({ auth }) {
 
     //Send Quotation Data
 
-    const sendQuotation = async () => {
+    const sendQuotation = async (prescriptionId) => {
 
-            const selectedPrescription = prescriptions.find(prescription => prescription.id === fetchDataId);
-            const user_id = selectedPrescription.user.id;
+        const selectedPrescription = prescriptions.find(prescription => prescription.id === fetchDataId);
+
+        if (selectedPrescription.quotation) {
+            console.log('Quotation already exists for this prescription');
+            // Optionally, inform the user that a quotation already exists
+            return;
+        }
+
+        const user_id = selectedPrescription.user.id;
 
         console.log(items);
 
@@ -101,14 +112,14 @@ export default function Dashboard({ auth }) {
                 body: JSON.stringify({
                     user_id,
                     tableData: items, // Assuming 'items' holds the table data
+                    prescriptionId,
                 }),
             });
 
             if (response.ok) {
                 // Handle success
                 console.log('Quotation sent successfully!');
-                // Redirect using Inertia after successful submission if needed
-                Inertia.post(route('your.route.name')); // Replace 'your.route.name' with your actual route
+
             } else {
                 // Handle error
                 console.error('Failed to send quotation.');
@@ -119,23 +130,44 @@ export default function Dashboard({ auth }) {
     };
 
 
-    return (
-        <AuthenticatedLayout
-            user={auth.user}
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    Dashboard
-                </h2>
+    //get quotation data
+    const [selectedQuotation, setSelectedQuotation] = useState(null);
+
+    const fetchQuotationData = async (quotationId) => {
+        try {
+            const response = await fetch('/show-quotation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: JSON.stringify({
+                    quotationId,
+                }),
+            });
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
             }
-        >
+            const data = await response.json();
+            setSelectedPrescription(data); // Set the fetched data here
+            setOpenQuotationModal(true);
+            console.log(data); // Handle the fetched quotation data here
+        } catch (error) {
+            console.error("Error fetching quotation data:", error);
+        }
+    };
+
+    return (
+        <>
+            <AdminDashboardHeader />
             <Head title="Admin Dashboard" />
 
             <div className="flex flex-row items-center justify-center">
                 <div className="dark:bg-gray-700 p-4">
-                    <div>Prescriptions</div>
-
-                    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <div className="text-2xl mb-4">Prescriptions</div>
+                    <div className="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg h-[450px] mb-6">
+                        <table className="w-[1000px] text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" className="px-6 py-3">
@@ -155,7 +187,11 @@ export default function Dashboard({ auth }) {
                                     </th>
 
                                     <th scope="col" className="px-6 py-3">
-                                        Delete Prescription
+                                        View Quotation
+                                    </th>
+
+                                    <th scope="col" className="px-6 py-3">
+                                        Status
                                     </th>
                                 </tr>
                             </thead>
@@ -184,16 +220,26 @@ export default function Dashboard({ auth }) {
                                                     fetchData(prescription.id)
                                                 }
                                             >
-                                                Toggle modal
+                                                View Prescription
                                             </Button>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <a
-                                                href="#"
-                                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                            <Button
+                                                onClick={() =>
+                                                    fetchQuotationData(prescription.quotation.id)
+                                                }
                                             >
-                                                Edit
-                                            </a>
+                                                View Quotation
+                                            </Button>
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {prescription.quotation ? (
+                                                <span>
+                                                    {prescription.quotation.status_id === 1 ? 'Not Accepted' : 'Accepted'}
+                                                </span>
+                                            ) : (
+                                                <span>No Quotation</span>
+                                            )}
                                         </td>
                                     </tr>
                                 ))}
@@ -204,7 +250,7 @@ export default function Dashboard({ auth }) {
             </div>
 
             <Modal show={openModal} onClose={() => setOpenModal(false)} size="4xl">
-                <Modal.Header>Terms of Service</Modal.Header>
+                <Modal.Header>Add Quotation</Modal.Header>
                 <Modal.Body>
 
 
@@ -279,16 +325,16 @@ export default function Dashboard({ auth }) {
                                                 className="w-2/3 p-2 border border-gray-300 rounded"
                                                 value={drug}
                                                 onChange={(e) => setDrug(e.target.value)}
-                                                 />
+                                            />
                                         </div>
                                         <div className="flex justify-between items-center mb-3">
                                             <label htmlFor="quantity" className="w-1/3 text-right px-4">Quantity:</label>
-                                            <input type="text" id="quantity" 
+                                            <input type="text" id="quantity"
                                                 placeholder="Enter quantity"
                                                 className="w-2/3 p-2 border border-gray-300 rounded"
                                                 value={quantity}
                                                 onChange={(e) => setQuantity(e.target.value)}
-                                                 />
+                                            />
                                         </div>
                                         <div className="flex justify-end">
                                             <button className="px-4 py-2 bg-blue-500 text-white rounded-lg w-2/3" onClick={handleAddItem}>Add</button>
@@ -296,25 +342,56 @@ export default function Dashboard({ auth }) {
                                     </div>
                                 </div>
                             </div>
-
-
-                            <div className="flex flex-row items-center justify-end">
-                                <button className="px-4 py-2 bg-red-500 text-white rounded-lg" onClick={sendQuotation}>
-                                    Send Quotation
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => setOpenModal(false)}>
-                        I accept
+                    <Button onClick={() => sendQuotation(fetchDataId)}>
+                        Send Quotation
                     </Button>
                     <Button color="gray" onClick={() => setOpenModal(false)}>
-                        Decline
+                        Close
                     </Button>
                 </Modal.Footer>
             </Modal>
-        </AuthenticatedLayout>
+
+
+            <Modal show={openQuotationModal} onClose={() => setOpenQuotationModal(false)} size="4xl">
+                <Modal.Header>Quotation</Modal.Header>
+                <Modal.Body>
+                    {selectedPrescription && (
+                        <div className="p-8 bg-white shadow-lg rounded-xl">
+                            <div className="flex flex-row items-center justify-between border-solid border-2 mb-8">
+                                <div className="w-full p-5">
+                                    <table className="w-96 table-auto" id="quotation_table">
+                                        <thead>
+                                            <tr>
+                                                <th className="text-left">Drug</th>
+                                                <th className="text-right">Quantity</th>
+                                                <th className="text-right">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {selectedPrescription.data.map((item, itemIndex) => (
+                                                <tr key={itemIndex}>
+                                                    <td className="py-2">{item.name}</td>
+                                                    {/* Access other fields of 'item' as needed */}
+                                                    <td className="py-2 text-right">{item.quantity}</td>
+                                                    <td className="py-2 text-right">{item.amount}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                    {/* Additional details or actions */}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+
+                </Modal.Footer>
+            </Modal>
+        </>
     );
 }
